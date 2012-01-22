@@ -1,8 +1,6 @@
 ### Description
 
-This is a little tool for formatting PHP code so that it conforms to the
-
-[WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards).
+This is a little tool for formatting PHP code so that it conforms to the [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards).
 
 It is based on the [phptidy](http://phptidy.berlios.de/) script by Magnus Rosenbaum.
 
@@ -13,7 +11,7 @@ http://magp.ie/2011/01/10/tidy-and-format-your-php-and-meet-wordpress-standards-
 ### Basic usage
 
 ```
-$ phptidy.php replace your-plugin/your-plugin.php
+$ phptidy.php replace some-file.php
 ```
 
 Complete documentation can be found on the phptidy home page: http://phptidy.berlios.de/
