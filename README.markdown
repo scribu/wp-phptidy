@@ -11,7 +11,7 @@ http://magp.ie/2011/01/10/tidy-and-format-your-php-and-meet-wordpress-standards-
 ### Basic usage
 
 ```
-$ phptidy.php replace some-file.php
+$ wp-phptidy.php replace some-file.php
 ```
 
 Complete documentation can be found on the phptidy home page: http://phptidy.berlios.de/
