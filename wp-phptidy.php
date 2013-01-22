@@ -1538,6 +1538,16 @@ function indent( &$tokens ) {
 			// After a command or a set of commands a control structure is closed.
 			if ( !empty( $control_structure[$curly_braces_count] ) ) --$control_structure[$curly_braces_count];
 
+		} elseif (
+			isset( $tokens[$key-1] ) and
+			is_array( $tokens[$key-1] ) and
+			$tokens[$key-1][0] === T_WHITESPACE and
+			strpos( $tokens[$key-1][1], "\n" )!==false and
+			is_array( $tokens[$key] ) and
+			$tokens[$key][0] === T_OBJECT_OPERATOR
+		) {
+			$tokens[$key][1] = "\t".$tokens[$key][1];
+
 		} else {
 			indent_text(
 				$tokens,
