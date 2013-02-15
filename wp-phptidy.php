@@ -135,6 +135,8 @@ foreach ( $_SERVER['argv'] as $key => $value ) {
 		$command = $value;
 		continue;
 	}
+	// @todo Add exclusion files here
+	// build $files_excludes
 	if ( substr( $value, 0, 1 )=="-" ) {
 		$options[] = $value;
 	} else {
@@ -196,7 +198,10 @@ if ( !count( $files ) ) {
 	}
 }
 
-// File excludes from config file
+// File excludes from config file, allow command override
+if ( count( $files_excludes ) )
+	$project_files_excludes = $files_excludes;
+	
 foreach ( $project_files_excludes as $file_exclude ) {
 	if (
 		( $key = array_search( $file_exclude, $files ) ) !== false
