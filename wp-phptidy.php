@@ -66,7 +66,7 @@ $indent_char = "\t";
 // Examples: false                      always on the same line
 //           true                       always on a new line
 //           array(T_CLASS, T_FUNCTION) for PEAR Coding Standards
-$curly_brace_newline = false;
+$curly_brace_newline = array(T_CLASS, T_FUNCTION);
 
 // PHP open tag
 // All php open tags will be replaced by the here defined kind of open tag.
