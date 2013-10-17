@@ -1,12 +1,10 @@
 ## Description
 
-This is a little tool for formatting PHP code so that it conforms to the [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards).
+The story:
 
-It is based on the [phptidy](http://phptidy.berlios.de/) script by Magnus Rosenbaum.
-
-Modifications were made by Eoin Gallagher and described here:
-
-http://magp.ie/2011/01/10/tidy-and-format-your-php-and-meet-wordpress-standards-on-coda-and-textwrangler/
+1. Magnus Rosenbaum wrote the original [phptidy](http://phptidy.berlios.de/) script.
+2. Eoin Gallagher modified it so that it conforms to the [WordPress Coding Standards](http://codex.wordpress.org/WordPress_Coding_Standards).
+3. I put Eoin's version on github, for convenience.
 
 ## Basic usage
 
