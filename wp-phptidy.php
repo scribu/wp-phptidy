@@ -104,6 +104,7 @@ $fix_docblock_format = true;
 $fix_docblock_space = false;
 $add_blank_lines = false;
 $indent = true;
+$fix_not_operator_space = true;
 
 ///////////// END OF DEFAULT CONFIGURATION ////////////////
 
@@ -1059,6 +1060,11 @@ function fix_separation_whitespace( &$tokens ) {
 					// Set the existing whitespace before the bracket to exactly one space or newline
 					$tokens[$key+1][1] = separation_whitespace( $control_structure );
 				}
+			} elseif (
+				$tokens[$key] === '?'
+			) {
+				// Insert space after the not operator
+				fix_ternary_not_operator_space( $tokens, $key );
 			}
 
 		} else {
@@ -1103,10 +1109,18 @@ function fix_separation_whitespace( &$tokens ) {
 				}
 				break;
 			case T_IF:
+				// Insert space after the not operator
+				fix_not_operator_space( $tokens, $key );
 			case T_ELSEIF:
+				// Insert space after the not operator
+				fix_not_operator_space( $tokens, $key );
 			case T_FOR:
+				// Insert space after the not operator
+				fix_not_operator_space( $tokens, $key );
 			case T_FOREACH:
 			case T_WHILE:
+				// Insert space after the not operator
+				fix_not_operator_space( $tokens, $key );
 			case T_SWITCH:
 				// At least 1 space between a statement and a opening round bracket
 				if ( $tokens[$key+1] === "(" ) {
@@ -1221,6 +1235,84 @@ function fix_round_bracket_space( &$tokens ) {
 			array_splice( $tokens, $key, 0, array(
 					array( T_WHITESPACE, " " )
 				) );
+		}
+	}
+}
+
+
+/**
+ * Adds one space after the NOT operator
+ *
+ * @param array   $tokens (reference)
+ * @param int     index of the statement token in the tokens array
+ */
+function fix_not_operator_space( &$tokens, $key ) {
+
+	$parentheses_opened = 0;
+	$parentheses_closed = 0;
+
+	for ( $index = $key + 1; $index < count( $tokens ); $index++ ) {
+		if ( 
+			// If the current token is a start round bracket...
+			'(' === $tokens[ $index ] 
+		) {
+			// Increase the count of start round brackets
+			$parentheses_opened++;
+		}
+		else if (
+			// If the current token is an end round bracket...
+			')' === $tokens[ $index ] 
+		) {
+			// Increase the count of end round brackets
+			$parentheses_closed++;
+			if ( 
+				// If the count of open round brackets equals the count of closed round brackets...
+				$parentheses_opened === $parentheses_closed
+			) {
+				// This is the final closing round bracket
+				break;
+			}
+		} 
+		else if ( 
+			// If the previous token is the not operator...
+			(  isset( $tokens[ $index - 1 ][0] ) and '!' === $tokens[ $index - 1 ][0] ) and
+			// ...and the current token is not whitespace
+			( isset( $tokens[ $index ][0] ) and T_WHITESPACE !== $tokens[ $index ][0] )
+		) {
+			// Insert whitespace
+			array_splice( $tokens, $index, 0, array( array( T_WHITESPACE, ' ' ) ) );
+		}
+	}
+}
+
+
+function fix_ternary_not_operator_space ( &$tokens, $key ) {
+
+	$equals_index = -1;
+
+	for ( $index = $key - 1; $index > -1; $index-- ) {
+		if (
+			// If the current token is the equal sign
+			$tokens[$index] === '=' 
+		) {
+			// Make spacing adjustments between this index and the $key
+			$equals_index = $index;
+			break;
+		}
+	}
+
+	if ( $equals_index > -1 ) {
+		for ( $index = $equals_index + 2; $index < $key; $index++ ) {
+			if (
+				// If the previous token is the not operator...
+				( isset( $tokens[$index][0] ) and '!' === $tokens[$index-1][0] ) and
+				// ...and the current token is not whitespace
+				( isset( $tokens[ $index ][0] ) and T_WHITESPACE !== $tokens[ $index ][0] )
+			) {
+				// Insert whitespace
+				array_splice( $tokens, $index, 0, array( array( T_WHITESPACE, ' ' ) ) );
+				break;
+			}
 		}
 	}
 }
